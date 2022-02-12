@@ -25,18 +25,37 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/users
 // @access    Private
 exports.createUser = asyncHandler(async (req, res, next) => {
-  console.log(req.user, req.body);
-  const createrRole = req.user;
-  const toBeCreatedRole = req.body;
-  if (!(createrRole === 'super admin' && toBeCreatedRole === 'admin')) {
-    next(new ErrorResponse('Only super admin can create admin.'));
+  const createrRole = req.user.role;
+  const toBeCreatedRole = req.body.role;
+  console.log({ createrRole, toBeCreatedRole });
+  if (createrRole === 'super admin' && toBeCreatedRole === 'admin') {
+    const user = await User.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: user,
+    });
+  } else {
+    return next(new ErrorResponse('Only super admin can create admin.'));
   }
-  if (!(createrRole === 'admin' && toBeCreatedRole === 'seller')) {
-    next(new ErrorResponse('Only admin can create seller.'));
+  if (createrRole === 'admin' && toBeCreatedRole === 'seller') {
+    const user = await User.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: user,
+    });
+  } else {
+    return next(new ErrorResponse('Only admin can create seller.'));
   }
-  if (!(createrRole === 'seller' && toBeCreatedRole === 'user')) {
-    next(new ErrorResponse('Only seller can create user.'));
+  if (createrRole === 'seller' && toBeCreatedRole === 'user') {
+    const user = await User.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: user,
+    });
+  } else {
+    return next(new ErrorResponse('Only seller can create user.'));
   }
+
   const user = await User.create(req.body);
 
   res.status(201).json({
