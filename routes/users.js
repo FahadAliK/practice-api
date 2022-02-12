@@ -7,8 +7,11 @@ const {
   updateUser,
   deleteUser,
 } = require('../controllers/users');
+const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
+
+router.use(protect);
 
 router.route('/').get(getUsers).post(createUser);
 
