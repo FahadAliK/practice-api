@@ -15,6 +15,9 @@ connectDB();
 // Route files
 const users = require('./routes/users');
 const auth = require('./routes/auth');
+const settings = require('./routes/settings');
+const pods = require('./routes/pods');
+const plans = require('./routes/plans');
 
 const app = express();
 
@@ -32,6 +35,9 @@ app.use(cors());
 // Mount routers
 app.use('/api/v1/users', users);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/settings', settings);
+app.use('/api/v1/pods', pods);
+app.use('/api/v1/plans', plans);
 
 app.use(errorHandler);
 
